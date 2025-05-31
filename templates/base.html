@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}Default description{% endblock %}">
+    <title>{% block title %}My Site{% endblock %}</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>
