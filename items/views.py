@@ -57,8 +57,8 @@ class BuyAPIView(APIView):
                     }
                 ],
                 mode='payment',
-                success_url='http://127.0.0.1:8000/success',
-                cancel_url='http://127.0.0.1:8000/cancel',
+                success_url=settings.STRIPE_SUCCESS_URL,
+                cancel_url=settings.STRIPE_CANCEL_URL,
             )
             logger.info(f'{session.id}\n')
             return Response({'sessionId': session.id})

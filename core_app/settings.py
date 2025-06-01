@@ -20,7 +20,7 @@ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", default="http://127.0.0
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(',')
 CSRF_COOKIE_DOMAIN = os.getenv("CSRF_COOKIE_DOMAIN", default="")
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", default='http://127.0.0.1:8000').split(',')
-
+DOMAIN = os.getenv("DOMAIN", default='http://127.0.0.1:8000')
 # Application definition
 
 DJANGO_APPS = [
@@ -190,3 +190,6 @@ CELERY_IGNORE_RESULT = False
 CELERY_TASK_RETRY_COUNTDOWN = 30
 CELERY_EAGER_PROPAGATES = DEBUG
 CELERY_RESULT_EXPIRES = 60 * 60
+
+STRIPE_SUCCESS_URL = DOMAIN + '/success'
+STRIPE_CANCEL_URL = DOMAIN + '/cancel'
