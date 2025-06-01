@@ -19,7 +19,7 @@ class Item(Timestamped):
     currency = models.CharField(
         max_length=3,
         choices=CurrencyChoices,
-        default='usd'
+        default=CurrencyChoices.USD
     )
 
     class Meta:

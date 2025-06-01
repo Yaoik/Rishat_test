@@ -69,7 +69,9 @@
         {% else %}
             <h1>{{ data.title }}</h1>
             <p class="description">{{ data.description }}</p>
-            <p class="price">${{ data.price }}</p>
+            <p class="price">
+                {% if data.currency == 'rub' %}₽{% else %}${% endif %}{{ data.price }}
+            </p>
             <button id="buy-button">Buy</button>
         {% endif %}
     </div>

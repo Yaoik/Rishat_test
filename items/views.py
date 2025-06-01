@@ -28,6 +28,7 @@ class ItemHTMLView(APIView):
                 'title': item.name,
                 'description': item.description,
                 'price': item.price,
+                'currency': item.currency,
                 'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
             }
             return Response({'data': item_data})
