@@ -22,6 +22,8 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(',')
 CSRF_COOKIE_DOMAIN = os.getenv("CSRF_COOKIE_DOMAIN", default="")
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", default='http://127.0.0.1:8000').split(',')
 DOMAIN = os.getenv("DOMAIN", default='http://127.0.0.1:8000')
+CSRF_COOKIE_SECURE = bool(os.getenv("CSRF_COOKIE_SECURE", default=0))
+CSRF_COOKIE_HTTPONLY = bool(os.getenv("CSRF_COOKIE_HTTPONLY", default=0))
 # Application definition
 
 DJANGO_APPS = [
