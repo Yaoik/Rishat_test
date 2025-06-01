@@ -47,7 +47,7 @@ class BuyAPIView(APIView):
                 line_items=[
                     {
                         'price_data': {
-                            'currency': 'usd',
+                            'currency': item.currency,
                             'product_data': {
                                 'name': item.name,
                             },
