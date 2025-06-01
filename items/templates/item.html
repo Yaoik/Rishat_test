@@ -1,12 +1,74 @@
 {% extends 'base.html' %}
 
-{% block title %}Buy Item 1{% endblock %}
+{% block title %}Buy Item {{ data.item_id }}{% endblock %}
+
+{% block styles %}
+    <style>
+        /* Контейнер для содержимого */
+        .item-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Стили для заголовка */
+        .item-container h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Стили для описания */
+        .item-container p.description {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Стили для цены */
+        .item-container p.price {
+            font-size: 1.8em;
+            color: #2ecc71;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        /* Стили для кнопки */
+        #buy-button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #buy-button:hover {
+            background-color: #2980b9;
+        }
+
+        #buy-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+    </style>
+{% endblock %}
 
 {% block content %}
-    <h1>{{ data.title }}</h1>
-    <p>{{ data.description }}</p>
-    <p>{{ data.price }}</p>
-    <button id="buy-button">Buy</button>
+    <div class="item-container">
+        <h1>{{ data.title }}</h1>
+        <p class="description">{{ data.description }}</p>
+        <p class="price">${{ data.price }}</p>
+        <button id="buy-button">Buy</button>
+    </div>
 {% endblock %}
 
 {% block scripts %}
@@ -16,7 +78,8 @@
       buyButton.addEventListener('click', function() {
         fetch('/buy/{{ data.item_id }}', {method: 'GET'})
         .then(response => response.json())
-        .then(session => stripe.redirectToCheckout({ sessionId: session.sessionId }));
+        .then(session => stripe.redirectToCheckout({ sessionId: session.sessionId }))
+        .catch(error => console.error('Error:', error));
       });
     </script>
 {% endblock %}
