@@ -1,18 +1,11 @@
 FROM python:3.12-slim
 
-WORKDIR /app
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt && \
+    apt update && apt install git -y && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends gcc libpq-dev \
-    && apt-get clean || apt-get update --fix-missing
+COPY . /app/src
+WORKDIR /app/src
 
-COPY requirements.txt /app/
-
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-
-COPY . /app/
-
-EXPOSE 8000
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--config", "gunicorn.py", "core_app.wsgi:application"]
