@@ -193,3 +193,5 @@ CELERY_RESULT_EXPIRES = 60 * 60
 
 STRIPE_SUCCESS_URL = DOMAIN + '/success'
 STRIPE_CANCEL_URL = DOMAIN + '/cancel'
+
+MIN_ITEM_PRICE = max(float(os.getenv('MIN_ITEM_PRICE', '0.5')), 0.5)

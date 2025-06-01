@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -10,7 +11,7 @@ class Item(Timestamped):
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        validators=[MinValueValidator(0.01)],
+        validators=[MinValueValidator(settings.MIN_ITEM_PRICE)],
         help_text="Цена не может быть отрицательной или равной нулю"
     )
 
@@ -19,4 +20,5 @@ class Item(Timestamped):
         verbose_name_plural = 'Товары'
 
     def __str__(self) -> str:
+        return f'Товар \"{self.name}\"'
         return f'Товар \"{self.name}\"'
