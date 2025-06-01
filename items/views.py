@@ -22,7 +22,7 @@ class ItemHTMLView(APIView):
 
     def get(self, request: Request, item_id: int) -> Response:
         try:
-            item = Item.objects.get(id=item_id)
+            item = Item.objects.get(id=item_id, price__gte=settings.MIN_ITEM_PRICE)
             item_data = {
                 'item_id': item.id,  # type:ignore
                 'title': item.name,
