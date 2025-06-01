@@ -67,7 +67,7 @@ class BuyAPIView(APIView):
                 ],
                 mode='payment',
                 success_url=settings.STRIPE_SUCCESS_URL,
-                cancel_url=f'{settings.DOMAIN}/{cancel_url}',
+                cancel_url=cancel_url,
             )
             logger.info(f'{session.id}\n')
             return Response({'sessionId': session.id})
