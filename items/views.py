@@ -41,7 +41,7 @@ class ItemHTMLView(APIView):
 class BuyAPIView(APIView):
     def get(self, request: Request, item_id: int) -> Response:
         try:
-            item = Item.objects.get(id=item_id)
+            item = Item.objects.get(id=item_id, price__gte=settings.MIN_ITEM_PRICE)
             session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
                 line_items=[
