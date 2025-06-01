@@ -193,6 +193,6 @@ CELERY_EAGER_PROPAGATES = DEBUG
 CELERY_RESULT_EXPIRES = 60 * 60
 
 STRIPE_SUCCESS_URL = DOMAIN + '/success'
-STRIPE_CANCEL_URL = DOMAIN + '/cancel'
+STRIPE_CANCEL_URL = DOMAIN + '/cancel'  # Не используется!
 
 MIN_ITEM_PRICE = Decimal(max(float(os.getenv('MIN_ITEM_PRICE', '0.5')), 0.5))

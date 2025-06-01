@@ -4,6 +4,7 @@ import stripe
 import stripe.error
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.request import Request
@@ -43,6 +44,13 @@ class BuyAPIView(APIView):
     def get(self, request: Request, item_id: int) -> Response:
         try:
             item = Item.objects.get(id=item_id, price__gte=settings.MIN_ITEM_PRICE)
+
+            cancel_url = request.build_absolute_uri(
+                reverse('item',
+                        kwargs={'item_id': item.id}  # type:ignore
+                        )
+            )
+
             session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
                 line_items=[
@@ -59,7 +67,7 @@ class BuyAPIView(APIView):
                 ],
                 mode='payment',
                 success_url=settings.STRIPE_SUCCESS_URL,
-                cancel_url=settings.STRIPE_CANCEL_URL,
+                cancel_url=f'{settings.DOMAIN}/{cancel_url}',
             )
             logger.info(f'{session.id}\n')
             return Response({'sessionId': session.id})
