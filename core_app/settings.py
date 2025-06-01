@@ -1,4 +1,5 @@
 import os
+from decimal import Decimal
 from pathlib import Path
 
 import dj_database_url
@@ -194,4 +195,4 @@ CELERY_RESULT_EXPIRES = 60 * 60
 STRIPE_SUCCESS_URL = DOMAIN + '/success'
 STRIPE_CANCEL_URL = DOMAIN + '/cancel'
 
-MIN_ITEM_PRICE = max(float(os.getenv('MIN_ITEM_PRICE', '0.5')), 0.5)
+MIN_ITEM_PRICE = Decimal(max(float(os.getenv('MIN_ITEM_PRICE', '0.5')), 0.5))
