@@ -64,10 +64,14 @@
 
 {% block content %}
     <div class="item-container">
-        <h1>{{ data.title }}</h1>
-        <p class="description">{{ data.description }}</p>
-        <p class="price">${{ data.price }}</p>
-        <button id="buy-button">Buy</button>
+        {% if error %}
+            <h1>Товар не найден</h1>
+        {% else %}
+            <h1>{{ data.title }}</h1>
+            <p class="description">{{ data.description }}</p>
+            <p class="price">${{ data.price }}</p>
+            <button id="buy-button">Buy</button>
+        {% endif %}
     </div>
 {% endblock %}
 
