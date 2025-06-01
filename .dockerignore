@@ -1,6 +1,7 @@
 .idea
 **/.git
 staticfiles
+static
 docker-compose.yml
 Dockerfile
 README.md
