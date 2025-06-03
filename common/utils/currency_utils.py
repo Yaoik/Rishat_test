@@ -7,6 +7,11 @@ from forex_python.converter import CurrencyRates, RatesNotAvailableError
 getcontext().prec = 8
 
 
+def get_rate(from_currency: str, to_currency: str) -> Decimal:
+    c = CurrencyRates(force_decimal=True)
+    return Decimal(str(c.get_rate(from_currency, to_currency)))
+
+
 def get_cached_conversion(from_currency: str, to_currency: str, amount: Decimal) -> Decimal:
     """Функция для получения курса валют"""
     from_currency, to_currency = from_currency.upper(), to_currency.upper()
@@ -18,10 +23,9 @@ def get_cached_conversion(from_currency: str, to_currency: str, amount: Decimal)
 
     if rate is None:
         try:
-            c = CurrencyRates(force_decimal=True)
-            rate = Decimal(str(c.get_rate(from_currency, to_currency)))
+            rate = get_rate(from_currency, to_currency)
             cache.set(cache_key, float(rate), timeout=settings.CURRENCY_CONVERSION_CACHE_TIMEOUT)
-        except RatesNotAvailableError:
-            rate = Decimal('1')
+        except RatesNotAvailableError as e:
+            raise Exception(f'{e=}')
 
     return amount * Decimal(str(rate))
