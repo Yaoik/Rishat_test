@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'common',
     'users',
     'items',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -185,6 +186,19 @@ REST_FRAMEWORK = {
     ],
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.getenv('REDIS_CACHES_LOCATION', "redis://redis:6379/0"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
+            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
+        },
+        "KEY_PREFIX": "core_app_",
+    }
+}
+
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', "redis://redis:6379/0")
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', "redis://redis:6379/0")
 CELERY_ACCEPT_CONTENT = ["json"]
@@ -198,3 +212,4 @@ STRIPE_SUCCESS_URL = DOMAIN + '/success'
 STRIPE_CANCEL_URL = DOMAIN + '/cancel'  # Не используется!
 
 MIN_ITEM_PRICE = Decimal(max(float(os.getenv('MIN_ITEM_PRICE', '0.5')), 0.5))
+CURRENCY_CONVERSION_CACHE_TIMEOUT = 60 * 60

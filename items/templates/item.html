@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load stripe_tags %}
 
-{% block title %}Buy Item {{ data.item_id }}{% endblock %}
+{% block title %}Buy Item {{ item.id }}{% endblock %}
 
 {% block styles %}
     <style>
@@ -67,10 +68,10 @@
         {% if error %}
             <h1>Товар не найден</h1>
         {% else %}
-            <h1>{{ data.title }}</h1>
-            <p class="description">{{ data.description }}</p>
+            <h1>{{ item.name }}</h1>
+            <p class="description">{{ item.description }}</p>
             <p class="price">
-                {% if data.currency == 'rub' %}₽{% else %}${% endif %}{{ data.price }}
+                {% if item.currency == 'rub' %}₽{% else %}${% endif %}{{ item.price }}
             </p>
             <button id="buy-button">Buy</button>
         {% endif %}
@@ -79,10 +80,10 @@
 
 {% block scripts %}
     <script type="text/javascript">
-      var stripe = Stripe('{{ data.STRIPE_PUBLISHABLE_KEY }}');
+      var stripe = Stripe('{% stripe_publishable_key %}');
       var buyButton = document.getElementById('buy-button');
       buyButton.addEventListener('click', function() {
-        fetch('/buy/{{ data.item_id }}', {method: 'GET'})
+        fetch('/buy/{{ item.id }}', {method: 'GET'})
         .then(response => response.json())
         .then(session => stripe.redirectToCheckout({ sessionId: session.sessionId }))
         .catch(error => console.error('Error:', error));

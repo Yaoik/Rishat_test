@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Item
+from .serializers import ItemSerializer
 
 logger = logging.getLogger(__name__)
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -22,15 +23,8 @@ class ItemHTMLView(APIView):
     def get(self, request: Request, item_id: int) -> Response:
         try:
             item = Item.objects.get(id=item_id, price__gte=settings.MIN_ITEM_PRICE)
-            item_data = {
-                'item_id': item.id,  # type:ignore
-                'title': item.name,
-                'description': item.description,
-                'price': item.price,
-                'currency': item.currency,
-                'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
-            }
-            return Response({'data': item_data})
+            serializer = ItemSerializer(item)
+            return Response({'item': serializer.data})
         except Item.DoesNotExist:
             return Response(
                 {'error': f'Item with id {item_id} not found'},
@@ -57,6 +51,7 @@ class BuyAPIView(APIView):
                             'currency': item.currency,
                             'product_data': {
                                 'name': item.name,
+                                'description': item.description,
                             },
                             'unit_amount': int(item.price * 100),
                         },
@@ -67,7 +62,6 @@ class BuyAPIView(APIView):
                 success_url=settings.STRIPE_SUCCESS_URL,
                 cancel_url=cancel_url,
             )
-            logger.info(f'{session.id}\n')
             return Response({'sessionId': session.id})
         except Item.DoesNotExist:
             return Response(
