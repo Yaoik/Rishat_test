@@ -27,7 +27,7 @@ class OrderHTMLView(APIView):
     def get(self, request: Request, order_id: int) -> Response:
         try:
             order = Order.objects.get(id=order_id)
-            currency = request.query_params.get('currency', 'usd').lower()
+            currency = request.query_params.get('currency', settings.ORDER_DEFAULT_CURRENCY).lower()
             valid_currencies = [choice[0] for choice in CurrencyChoices.choices]
             if currency not in valid_currencies:
                 return Response(
@@ -64,7 +64,7 @@ class OrderHTMLView(APIView):
 class BuyOrderAPIView(APIView):
     def get(self, request: Request, order_id: int) -> Response:
         try:
-            currency = request.query_params.get('currency', 'usd')
+            currency = request.query_params.get('currency', settings.ORDER_DEFAULT_CURRENCY)
             order = Order.objects.get(id=order_id)
 
             cancel_url = request.build_absolute_uri(

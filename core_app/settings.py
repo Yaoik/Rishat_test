@@ -213,3 +213,4 @@ STRIPE_CANCEL_URL = DOMAIN + '/cancel'  # Не используется!
 
 MIN_ITEM_PRICE = Decimal(max(float(os.getenv('MIN_ITEM_PRICE', '0.5')), 0.5))
 CURRENCY_CONVERSION_CACHE_TIMEOUT = 60 * 60
+ORDER_DEFAULT_CURRENCY = 'rub'
